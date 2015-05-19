@@ -1,0 +1,25 @@
+  <bean id="filterChainProxy" class="org.springframework.security.util.FilterChainProxy">
+    <property name="filterInvocationDefinitionSource">
+      <value>
+        <![CDATA[CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+        PATTERN_TYPE_APACHE_ANT
+        
+/webservices/**=securityContextHolderAwareRequestFilterForWS,httpSessionPentahoSessionContextIntegrationFilter,httpSessionContextIntegrationFilter,OncaseCustomTokenFilter,basicProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilterForWS,filterInvocationInterceptorForWS
+        
+/api/**=securityContextHolderAwareRequestFilterForWS,httpSessionPentahoSessionContextIntegrationFilter,httpSessionContextIntegrationFilter,OncaseCustomTokenFilter,basicProcessingFilter,requestParameterProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilterForWS,filterInvocationInterceptorForWS
+        
+/plugin/**=securityContextHolderAwareRequestFilterForWS,httpSessionPentahoSessionContextIntegrationFilter,httpSessionContextIntegrationFilter,OncaseCustomTokenFilter,basicProcessingFilter,requestParameterProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilterForWS,filterInvocationInterceptorForWS
+        
+/**=securityContextHolderAwareRequestFilter,httpSessionPentahoSessionContextIntegrationFilter,httpSessionContextIntegrationFilter,httpSessionReuseDetectionFilter,OncaseCustomTokenFilter,logoutFilter,authenticationProcessingFilter,basicProcessingFilter,requestParameterProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor]]>
+      </value>
+    </property>
+  </bean>
+
+<!-- custom auto-login begin -->
+  <bean id="OncaseCustomTokenFilter" class="com.oncase.pentaho.platform.security.filter.CustomTokenFilter">
+    <property name="authenticationManager">
+      <ref local="authenticationManager" />
+    </property>
+    <property name="servlet_name" value="(.*)requestToken=(.*)"/>
+  </bean>
+<!-- custom auto-login end -->  
